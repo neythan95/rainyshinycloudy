@@ -95,9 +95,64 @@
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Clear Mini.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Clear.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Clouds Mini.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Clouds.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Partially Cloudy.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Rain Mini.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Rain.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Snow Mini.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Snow.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Thunderstorm Mini.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Thunderstorm.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Clear Mini.imageset\Clear Mini.png" />
+    <ImageAsset Include="Assets.xcassets\Clear Mini.imageset\Clear Mini%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Clear Mini.imageset\Clear Mini%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Clear.imageset\Clear.png" />
+    <ImageAsset Include="Assets.xcassets\Clear.imageset\Clear%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Clear.imageset\Clear%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Clouds Mini.imageset\Clouds Mini.png" />
+    <ImageAsset Include="Assets.xcassets\Clouds Mini.imageset\Clouds Mini%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Clouds Mini.imageset\Clouds Mini%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Clouds.imageset\Clouds.png" />
+    <ImageAsset Include="Assets.xcassets\Clouds.imageset\Clouds%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Clouds.imageset\Clouds%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Partially Cloudy.imageset\Partially Cloudy.png" />
+    <ImageAsset Include="Assets.xcassets\Partially Cloudy.imageset\Partially Cloudy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Partially Cloudy.imageset\Partially Cloudy%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Rain Mini.imageset\Rain Mini.png" />
+    <ImageAsset Include="Assets.xcassets\Rain Mini.imageset\Rain Mini%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Rain Mini.imageset\Rain Mini%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Rain.imageset\Rain.png" />
+    <ImageAsset Include="Assets.xcassets\Rain.imageset\Rain%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Rain.imageset\Rain%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Snow Mini.imageset\Snow Mini.png" />
+    <ImageAsset Include="Assets.xcassets\Snow Mini.imageset\Snow Mini%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Snow Mini.imageset\Snow Mini%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Snow.imageset\Snow.png" />
+    <ImageAsset Include="Assets.xcassets\Snow.imageset\Snow%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Snow.imageset\Snow%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Thunderstorm Mini.imageset\Thunderstorm Mini.png" />
+    <ImageAsset Include="Assets.xcassets\Thunderstorm Mini.imageset\Thunderstorm Mini%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Thunderstorm Mini.imageset\Thunderstorm Mini%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Thunderstorm.imageset\Thunderstorm.png" />
+    <ImageAsset Include="Assets.xcassets\Thunderstorm.imageset\Thunderstorm%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Thunderstorm.imageset\Thunderstorm%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Assets.xcassets\Clear Mini.imageset\" />
+    <Folder Include="Assets.xcassets\Clear.imageset\" />
+    <Folder Include="Assets.xcassets\Clouds Mini.imageset\" />
+    <Folder Include="Assets.xcassets\Clouds.imageset\" />
+    <Folder Include="Assets.xcassets\Partially Cloudy.imageset\" />
+    <Folder Include="Assets.xcassets\Rain Mini.imageset\" />
+    <Folder Include="Assets.xcassets\Rain.imageset\" />
+    <Folder Include="Assets.xcassets\Snow Mini.imageset\" />
+    <Folder Include="Assets.xcassets\Snow.imageset\" />
+    <Folder Include="Assets.xcassets\Thunderstorm Mini.imageset\" />
+    <Folder Include="Assets.xcassets\Thunderstorm.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
