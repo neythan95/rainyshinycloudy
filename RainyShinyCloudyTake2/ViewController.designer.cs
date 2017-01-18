@@ -15,31 +15,13 @@ namespace RainyShinyCloudyTake2
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIStackView bigStackView { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIStackView leftStackView { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIStackView rightStackView { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (bigStackView != null) {
-                bigStackView.Dispose ();
-                bigStackView = null;
-            }
-
             if (leftStackView != null) {
                 leftStackView.Dispose ();
                 leftStackView = null;
-            }
-
-            if (rightStackView != null) {
-                rightStackView.Dispose ();
-                rightStackView = null;
             }
         }
     }
