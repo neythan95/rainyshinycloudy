@@ -7,22 +7,15 @@
 using Foundation;
 using System;
 using System.CodeDom.Compiler;
+using UIKit;
 
 namespace RainyShinyCloudyTake2
 {
-    [Register ("ViewController")]
-    partial class ViewController
+    [Register ("CellForecast")]
+    partial class CellForecast
     {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIStackView leftStackView { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
-            if (leftStackView != null) {
-                leftStackView.Dispose ();
-                leftStackView = null;
-            }
         }
     }
 }

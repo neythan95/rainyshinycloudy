@@ -153,6 +153,9 @@
     <Folder Include="Assets.xcassets\Snow.imageset\" />
     <Folder Include="Assets.xcassets\Thunderstorm Mini.imageset\" />
     <Folder Include="Assets.xcassets\Thunderstorm.imageset\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Views\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -165,9 +168,15 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="ViewController.cs" />
-    <Compile Include="ViewController.designer.cs">
-      <DependentUpon>ViewController.cs</DependentUpon>
+    <Compile Include="Views\TblForecastDelegate.cs" />
+    <Compile Include="Views\TblForecastDataSource.cs" />
+    <Compile Include="Controllers\WeatherVC.cs" />
+    <Compile Include="Controllers\WeatherVC.designer.cs">
+      <DependentUpon>WeatherVC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CellForecast.cs" />
+    <Compile Include="Views\CellForecast.designer.cs">
+      <DependentUpon>CellForecast.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
