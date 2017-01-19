@@ -3,6 +3,13 @@ using System;
 using UIKit;
 using System.Net.Http;
 using CoreLocation;
+using System.Threading;
+using System.IO;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Net;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace RainyShinyCloudyTake2
 {
@@ -35,7 +42,7 @@ namespace RainyShinyCloudyTake2
 			locManager.RequestWhenInUseAuthorization();
 		}
 
-		void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs args)
+		async void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs args)
 		{
 			authorizationStatus = args.Status;
 
@@ -46,7 +53,23 @@ namespace RainyShinyCloudyTake2
 				location.Latitude = locManager.Location.Coordinate.Latitude;
 				location.Longitude = locManager.Location.Coordinate.Longitude;
 
-				Console.WriteLine($"{location.Latitude} {location.Longitude}");
+				Constants.ConstructURL(location.Latitude, location.Longitude);
+
+				Console.WriteLine(Constants.URL);
+
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(Constants.URL));
+				request.ContentType = "application/json";
+				request.Method = "GET";
+
+				var response = await request.GetResponseAsync();
+				Stream stream = response.GetResponseStream();
+
+				JsonSerializerSettings settings = new JsonSerializerSettings();
+				settings.Formatting = Newtonsoft.Json.Formatting.None;
+
+				string result = JsonConvert.SerializeObject(stream.Read(), settings);
+
+				Console.WriteLine(result);
 			}
 		}
 	}
