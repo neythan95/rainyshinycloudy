@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
 	<string>RainyShinyCloudyTake2</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.nathanielbrionsison.rainyshinycloudytake2</string>
+	<string>com.nathanielbrionsison.xamarinWeatherApp</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -36,5 +36,7 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please allow us to know your location to give you accurate weather forecast.</string>
 </dict>
 </plist>

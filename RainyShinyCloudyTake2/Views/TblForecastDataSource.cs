@@ -3,7 +3,7 @@ using UIKit;
 
 namespace RainyShinyCloudyTake2
 {
-	public class TblForecastDataSource: UITableViewDataSource
+	public class TblForecastDataSource : UITableViewDataSource
 	{
 		public TblForecastDataSource()
 		{
