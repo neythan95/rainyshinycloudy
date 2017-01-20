@@ -4,38 +4,20 @@ using UIKit;
 
 namespace RainyShinyCloudyTake2
 {
-    public partial class CellForecast : UITableViewCell
+	public partial class CellForecast : UITableViewCell
 	{
-		public string Day
+		public CellForecast(IntPtr handle) : base(handle)
 		{
-			get;
-			set;
+
 		}
 
-		public string WeatherType
+		public void BindForecastToCell(Forecast forecast)
 		{
-			get;
-			set;
+			lblDay.Text = forecast.Day;
+			lblWeatherType.Text = forecast.WeatherType;
+			imgWeatherType.Image = UIImage.FromBundle(forecast.WeatherType);
+			lblTempHigh.Text = $"{forecast.TempHigh}°";
+			lblTempLow.Text = $"{forecast.TempLow}°";
 		}
-
-		public double TempLow
-		{
-			get;
-			set;
-		}
-
-		public double TempHigh
-		{
-			get;
-			set;
-		}
-
-		public CellForecast (IntPtr handle) : base (handle)
-		{
-			this.Day = "";
-			this.WeatherType = "";
-			this.TempLow = 0;
-			this.TempHigh = 0;
-        }
-    }
+	}
 }

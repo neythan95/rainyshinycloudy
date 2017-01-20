@@ -1,15 +1,9 @@
-using Foundation;
 using System;
 using UIKit;
 using System.Net.Http;
 using CoreLocation;
-using System.Threading;
-using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Net;
 using System.Collections.Generic;
-using System.Xml;
 
 namespace RainyShinyCloudyTake2
 {
@@ -27,9 +21,6 @@ namespace RainyShinyCloudyTake2
 		{
 			base.ViewDidLoad();
 
-			tblForecast.Delegate = new TblForecastDelegate();
-			tblForecast.DataSource = new TblForecastDataSource();
-
 			locManager = new CLLocationManager();
 			locManager.AuthorizationChanged += OnAuthorizationChanged;
 
@@ -44,15 +35,21 @@ namespace RainyShinyCloudyTake2
 			{
 				_CaptureLocation();
 
-				HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Get, Constants.URL);
-
-				HttpClient client = new HttpClient();
-				HttpResponseMessage result = await client.SendAsync(msg);
-
-				string json = await result.Content.ReadAsStringAsync();
-
-				CurrentWeather currentWeather = new CurrentWeather(json);
+				CurrentWeather currentWeather = new CurrentWeather(await _CallAPI(Constants.CURRENT_WEATHER_URL));
 				_BindCurrentWeatherToUI(currentWeather);
+
+				TblForecastDataSource ds = new TblForecastDataSource();
+				ds.PopulateForecasts(await ds.CallAPI(Constants.FORECAST_URL));
+
+				tblForecast.Delegate = new TblForecastDelegate();
+				tblForecast.DataSource = ds;
+
+				tblForecast.ReloadData();
+
+				//Console.WriteLine($"{ds.forecasts[0].Day}");
+				//Console.WriteLine($"{ds.forecasts[0].WeatherType}");
+				//Console.WriteLine($"{ds.forecasts[0].TempLow}");
+				//Console.WriteLine($"{ds.forecasts[0].TempHigh}");
 			}
 		}
 
@@ -70,16 +67,28 @@ namespace RainyShinyCloudyTake2
 			location.Latitude = locManager.Location.Coordinate.Latitude;
 			location.Longitude = locManager.Location.Coordinate.Longitude;
 
-			Constants.ConstructURL(location.Latitude, location.Longitude);
+			Constants.CONSTRUCT_URL(location.Latitude, location.Longitude);
 		}
 
 		private void _BindCurrentWeatherToUI(CurrentWeather currentWeather)
 		{
 			lblToday.Text = currentWeather.Day;
 			lblCity.Text = currentWeather.City;
-			lblCurrentTemp.Text = $"{Convert.ToInt32(currentWeather.Temperature)}°";
+			lblCurrentTemp.Text = $"{currentWeather.Temperature}°";
 			lblWeatherType.Text = currentWeather.WeatherType;
 			imgWeatherType.Image = UIImage.FromBundle(currentWeather.WeatherType);
+		}
+
+		private async Task<string> _CallAPI(string url)
+		{
+			HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Get, url);
+
+			HttpClient client = new HttpClient();
+			HttpResponseMessage result = await client.SendAsync(msg);
+
+			string json = await result.Content.ReadAsStringAsync();
+
+			return json;
 		}
 		#endregion
 	}

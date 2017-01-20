@@ -13,7 +13,7 @@ namespace RainyShinyCloudyTake2
 			set;
 		}
 
-		public double Temperature
+		public int Temperature
 		{
 			get;
 			set;
@@ -47,6 +47,7 @@ namespace RainyShinyCloudyTake2
 			this.WeatherType = _GetWeatherType(currentWeather);
 		}
 
+		#region PRIVATE METHODS
 		private string _GetWeatherType(Dictionary<string, object> currentWeather)
 		{
 			var weatherArray = JsonConvert.DeserializeObject<object[]>(currentWeather["weather"].ToString());
@@ -61,12 +62,12 @@ namespace RainyShinyCloudyTake2
 			return currentWeather["name"].ToString();
 		}
 
-		private double _GetTemperature(Dictionary<string, object> currentWeather)
+		private int _GetTemperature(Dictionary<string, object> currentWeather)
 		{
 			var main = JsonConvert.DeserializeObject<Dictionary<string, object>>(currentWeather["main"].ToString());
 			double temperatureInKelvin = Convert.ToDouble(main["temp"]);
 
-			return _ConvertKelvinToCelcius(temperatureInKelvin);
+			return Convert.ToInt32(_ConvertKelvinToCelcius(temperatureInKelvin));
 		}
 
 		private double _ConvertKelvinToCelcius(double kelvin)
@@ -83,5 +84,6 @@ namespace RainyShinyCloudyTake2
 
 			return today;
 		}
+		#endregion
 	}
 }

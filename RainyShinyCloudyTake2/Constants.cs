@@ -9,13 +9,16 @@ namespace RainyShinyCloudyTake2
 {
 	public static class Constants
 	{
-		public static string URL = "";
+		public static string CURRENT_WEATHER_URL = "";
+
+		public static string FORECAST_URL = "";
 
 		public static string API_KEY = "09c06bc14124036990128caa27b90868";
 
-		public static void ConstructURL(double latitude, double longitude)
+		public static void CONSTRUCT_URL(double latitude, double longitude)
 		{
-			URL = $"http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={API_KEY}";
+			CURRENT_WEATHER_URL = $"http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={API_KEY}";
+			FORECAST_URL = $"http://api.openweathermap.org/data/2.5/forecast/daily?lat={latitude}&lon={longitude}&cnt=10&mode=json&appid={API_KEY}";
 		}
 	}
 }
