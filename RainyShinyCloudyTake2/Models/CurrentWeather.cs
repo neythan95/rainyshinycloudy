@@ -1,8 +1,12 @@
 ﻿using System;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+
 namespace RainyShinyCloudyTake2
 {
 	public class CurrentWeather
 	{
+		#region PROPERTIES
 		public string Day
 		{
 			get;
@@ -26,13 +30,58 @@ namespace RainyShinyCloudyTake2
 			get;
 			set;
 		}
+		#endregion
 
-		public CurrentWeather()
+		public CurrentWeather(string json)
 		{
-			this.Day = "";
-			this.Temperature = 0;
-			this.City = "";
-			this.WeatherType = "";
+			this.UpdateCurrentWeather(json);
+		}
+
+		public void UpdateCurrentWeather(string json)
+		{
+			var currentWeather = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+
+			this.Day = _GetDay();
+			this.Temperature = _GetTemperature(currentWeather);
+			this.City = _GetCity(currentWeather);
+			this.WeatherType = _GetWeatherType(currentWeather);
+		}
+
+		private string _GetWeatherType(Dictionary<string, object> currentWeather)
+		{
+			var weatherArray = JsonConvert.DeserializeObject<object[]>(currentWeather["weather"].ToString());
+			var weather = JsonConvert.DeserializeObject<Dictionary<string, object>>(weatherArray[0].ToString());
+			string weatherType = weather["main"].ToString();
+
+			return weatherType;
+		}
+
+		private string _GetCity(Dictionary<string, object> currentWeather)
+		{
+			return currentWeather["name"].ToString();
+		}
+
+		private double _GetTemperature(Dictionary<string, object> currentWeather)
+		{
+			var main = JsonConvert.DeserializeObject<Dictionary<string, object>>(currentWeather["main"].ToString());
+			double temperatureInKelvin = Convert.ToDouble(main["temp"]);
+
+			return _ConvertKelvinToCelcius(temperatureInKelvin);
+		}
+
+		private double _ConvertKelvinToCelcius(double kelvin)
+		{
+			var kelvinToCelcius = kelvin - 273.15;
+
+			return kelvinToCelcius;
+		}
+
+		private string _GetDay()
+		{
+			DateTime dateToday = DateTime.Today;
+			string today = String.Format("{0:dddd, MMMM d, yyyy}", dateToday);
+
+			return today;
 		}
 	}
 }

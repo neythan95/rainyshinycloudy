@@ -17,7 +17,6 @@ namespace RainyShinyCloudyTake2
 	{
 		CLAuthorizationStatus authorizationStatus;
 		CLLocationManager locManager;
-		CLLocationCoordinate2D location;
 
 		public WeatherVC(IntPtr handle) : base(handle)
 		{
@@ -34,12 +33,7 @@ namespace RainyShinyCloudyTake2
 			locManager = new CLLocationManager();
 			locManager.AuthorizationChanged += OnAuthorizationChanged;
 
-			RequestAuthorization();
-		}
-
-		private void RequestAuthorization()
-		{
-			locManager.RequestWhenInUseAuthorization();
+			_RequestAuthorization();
 		}
 
 		async void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs args)
@@ -48,29 +42,45 @@ namespace RainyShinyCloudyTake2
 
 			if (authorizationStatus == CLAuthorizationStatus.AuthorizedWhenInUse)
 			{
-				locManager.StartUpdatingLocation();
+				_CaptureLocation();
 
-				location.Latitude = locManager.Location.Coordinate.Latitude;
-				location.Longitude = locManager.Location.Coordinate.Longitude;
+				HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Get, Constants.URL);
 
-				Constants.ConstructURL(location.Latitude, location.Longitude);
+				HttpClient client = new HttpClient();
+				HttpResponseMessage result = await client.SendAsync(msg);
 
-				Console.WriteLine(Constants.URL);
+				string json = await result.Content.ReadAsStringAsync();
 
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(Constants.URL));
-				request.ContentType = "application/json";
-				request.Method = "GET";
-
-				var response = await request.GetResponseAsync();
-				Stream stream = response.GetResponseStream();
-
-				JsonSerializerSettings settings = new JsonSerializerSettings();
-				settings.Formatting = Newtonsoft.Json.Formatting.None;
-
-				string result = JsonConvert.SerializeObject(stream.Read(), settings);
-
-				Console.WriteLine(result);
+				CurrentWeather currentWeather = new CurrentWeather(json);
+				_BindCurrentWeatherToUI(currentWeather);
 			}
 		}
+
+		#region PRIVATE METHODS
+		private void _RequestAuthorization()
+		{
+			locManager.RequestWhenInUseAuthorization();
+		}
+
+		private void _CaptureLocation()
+		{
+			locManager.StartUpdatingLocation();
+
+			CLLocationCoordinate2D location = new CLLocationCoordinate2D();
+			location.Latitude = locManager.Location.Coordinate.Latitude;
+			location.Longitude = locManager.Location.Coordinate.Longitude;
+
+			Constants.ConstructURL(location.Latitude, location.Longitude);
+		}
+
+		private void _BindCurrentWeatherToUI(CurrentWeather currentWeather)
+		{
+			lblToday.Text = currentWeather.Day;
+			lblCity.Text = currentWeather.City;
+			lblCurrentTemp.Text = $"{Convert.ToInt32(currentWeather.Temperature)}°";
+			lblWeatherType.Text = currentWeather.WeatherType;
+			imgWeatherType.Image = UIImage.FromBundle(currentWeather.WeatherType);
+		}
+		#endregion
 	}
 }

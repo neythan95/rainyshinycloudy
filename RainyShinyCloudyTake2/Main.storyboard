@@ -159,6 +159,11 @@
                     <connections>
                         <outlet property="leftStackView" destination="40" id="name-outlet-40"/>
                         <outlet property="tblForecast" destination="143" id="name-outlet-143"/>
+                        <outlet property="lblToday" destination="41" id="name-outlet-41"/>
+                        <outlet property="lblCurrentTemp" destination="42" id="name-outlet-42"/>
+                        <outlet property="lblCity" destination="43" id="name-outlet-43"/>
+                        <outlet property="lblWeatherType" destination="24" id="name-outlet-24"/>
+                        <outlet property="imgWeatherType" destination="49" id="name-outlet-49"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
