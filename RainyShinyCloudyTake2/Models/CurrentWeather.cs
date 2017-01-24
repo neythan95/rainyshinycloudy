@@ -45,14 +45,32 @@ namespace RainyShinyCloudyTake2
 			this.UpdateCurrentWeather(json);
 		}
 
+		public CurrentWeather(string jsonWeather, string jsonLocation)
+		{
+			this.UpdateCurrentWeather(jsonWeather);
+			this.UpdateCurrentCity(jsonLocation);
+		}
+
 		public void UpdateCurrentWeather(string json)
 		{
 			var currentWeather = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
 
 			this.Day = _GetDay();
 			this.Temperature = _GetTemperature(currentWeather);
-			this.City = _GetCity(currentWeather);
 			this.WeatherType = _GetWeatherType(currentWeather);
+			//this.City = _GetCity(currentWeather);
+		}
+
+		public void UpdateCurrentCity(string json)
+		{
+			var currentLocation = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+			var resultArray = JsonConvert.DeserializeObject<object[]>(currentLocation["results"].ToString());
+			var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(resultArray[0].ToString());
+			var address_components = JsonConvert.DeserializeObject<object[]>(result["address_components"].ToString());
+			var address = JsonConvert.DeserializeObject<Dictionary<string, object>>(address_components[2].ToString());
+			string city = address["long_name"].ToString();
+
+			this.City = city;
 		}
 
 		#region PRIVATE METHODS
@@ -65,6 +83,7 @@ namespace RainyShinyCloudyTake2
 			return weatherType;
 		}
 
+		//openweathermap = not accurate
 		private string _GetCity(Dictionary<string, object> currentWeather)
 		{
 			return currentWeather["name"].ToString();

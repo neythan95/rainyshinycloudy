@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>RainyShinyCloudyTake2</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.nathanielbrionsison.xamarinWeatherApp</string>
 	<key>CFBundleShortVersionString</key>
@@ -38,5 +36,7 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please allow us to know your location to give you accurate weather forecast.</string>
+	<key>CFBundleName</key>
+	<string>Neythan Weather</string>
 </dict>
 </plist>

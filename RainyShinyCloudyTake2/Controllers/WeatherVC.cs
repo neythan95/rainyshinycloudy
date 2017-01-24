@@ -80,7 +80,8 @@ namespace RainyShinyCloudyTake2
 			location.Latitude = locManager.Location.Coordinate.Latitude;
 			location.Longitude = locManager.Location.Coordinate.Longitude;
 
-			Constants.CONSTRUCT_URL(location.Latitude, location.Longitude);
+			Constants.CONSTRUCT_WEATHER_URL(location.Latitude, location.Longitude);
+			Constants.CONSTRUCT_LOCATION_URL(location.Latitude, location.Longitude);
 		}
 
 		private async Task _FetchWeatherData()
@@ -94,6 +95,7 @@ namespace RainyShinyCloudyTake2
 				try
 				{
 					currentWeather.UpdateCurrentWeather(await _CallAPI(Constants.CURRENT_WEATHER_URL));
+					currentWeather.UpdateCurrentCity(await _CallAPI(Constants.LOCATION_URL));
 					ds.PopulateForecasts(await ds.CallAPI(Constants.FORECAST_URL));
 				}
 				catch
