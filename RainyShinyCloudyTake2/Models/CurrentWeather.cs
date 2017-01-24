@@ -32,6 +32,14 @@ namespace RainyShinyCloudyTake2
 		}
 		#endregion
 
+		public CurrentWeather()
+		{
+			this.Day = "n/a";
+			this.Temperature = 0;
+			this.City = "n/a";
+			this.WeatherType = "n/a";
+		}
+
 		public CurrentWeather(string json)
 		{
 			this.UpdateCurrentWeather(json);

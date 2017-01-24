@@ -3,6 +3,7 @@ using UIKit;
 using System.Net.Http;
 using CoreLocation;
 using System.Threading.Tasks;
+using Foundation;
 
 namespace RainyShinyCloudyTake2
 {
@@ -10,9 +11,9 @@ namespace RainyShinyCloudyTake2
 	{
 		TblForecastDataSource ds = new TblForecastDataSource();
 		TblForecastDelegate dl = new TblForecastDelegate();
-
 		CLLocationManager locManager = new CLLocationManager();
-		CLAuthorizationStatus authorizationStatus;
+		CurrentWeather currentWeather = new CurrentWeather();
+		UIRefreshControl refreshControl = new UIRefreshControl();
 
 		public WeatherVC(IntPtr handle) : base(handle)
 		{
@@ -27,6 +28,11 @@ namespace RainyShinyCloudyTake2
 			tblForecast.DataSource = ds;
 
 			locManager.AuthorizationChanged += OnAuthorizationChanged;
+
+			refreshControl.ValueChanged += _Refresh;
+			refreshControl.AttributedTitle = new NSAttributedString("Pull down or shake your screen to refresh");
+
+			tblForecast.Add(refreshControl);
 		}
 
 		public override void ViewWillAppear(bool animated)
@@ -36,33 +42,27 @@ namespace RainyShinyCloudyTake2
 			_RequestAuthorization();
 		}
 
-		public async void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs args)
+		public async override void MotionEnded(UIEventSubtype motion, UIEvent evt)
 		{
-			authorizationStatus = args.Status;
+			base.MotionEnded(motion, evt);
 
-			if (authorizationStatus == CLAuthorizationStatus.AuthorizedWhenInUse)
+			_CaptureLocation();
+			await _FetchWeatherData();
+			_BindWeatherDataToUI();
+		}
+
+
+		public async void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs e)
+		{
+			if (e.Status == CLAuthorizationStatus.AuthorizedWhenInUse)
 			{
 				_CaptureLocation();
-
-				if (Reachability.InternetConnectionStatus() == NetworkStatus.NotReachable)
-				{
-					_CreateAndShowAlert("Please turn on Wifi or Cellular data.");
-				}
-				else
-				{
-					try
-					{
-						var currentWeather = new CurrentWeather(await _CallAPI(Constants.CURRENT_WEATHER_URL));
-						ds.PopulateForecasts(await ds.CallAPI(Constants.FORECAST_URL));
-
-						_BindCurrentWeatherToUI(currentWeather);
-						tblForecast.ReloadData();
-					}
-					catch
-					{
-						_CreateAndShowAlert("Cannot retrieve data from the server, please make sure that the network you are using is connected to the internet.");
-					}
-				}
+				await _FetchWeatherData();
+				_BindWeatherDataToUI();
+			}
+			else
+			{
+				_RequestAuthorization();
 			}
 		}
 
@@ -83,13 +83,35 @@ namespace RainyShinyCloudyTake2
 			Constants.CONSTRUCT_URL(location.Latitude, location.Longitude);
 		}
 
-		private void _BindCurrentWeatherToUI(CurrentWeather currentWeather)
+		private async Task _FetchWeatherData()
+		{
+			if (!Reachability.IsHostReachable("www.google.com"))
+			{
+				_CreateAndShowAlert("Please turn on Wifi or Cellular data.");
+			}
+			else
+			{
+				try
+				{
+					currentWeather.UpdateCurrentWeather(await _CallAPI(Constants.CURRENT_WEATHER_URL));
+					ds.PopulateForecasts(await ds.CallAPI(Constants.FORECAST_URL));
+				}
+				catch
+				{
+					_CreateAndShowAlert("Cannot retrieve data from the server, please make sure that the network you are using is connected to the internet.");
+				}
+			}
+		}
+
+		private void _BindWeatherDataToUI()
 		{
 			lblToday.Text = currentWeather.Day;
 			lblCity.Text = currentWeather.City;
 			lblCurrentTemp.Text = $"{currentWeather.Temperature}°";
 			lblWeatherType.Text = currentWeather.WeatherType;
 			imgWeatherType.Image = UIImage.FromBundle(currentWeather.WeatherType);
+
+			tblForecast.ReloadData();
 		}
 
 		private async Task<string> _CallAPI(string url)
@@ -115,6 +137,18 @@ namespace RainyShinyCloudyTake2
 			alert.AddButton("ok");
 
 			alert.Show();
+		}
+
+		private async void _Refresh(object sender, EventArgs args)
+		{
+			refreshControl.BeginRefreshing();
+
+			_CaptureLocation();
+			await _FetchWeatherData();
+
+			refreshControl.EndRefreshing();
+
+			_BindWeatherDataToUI();
 		}
 		#endregion
 	}
