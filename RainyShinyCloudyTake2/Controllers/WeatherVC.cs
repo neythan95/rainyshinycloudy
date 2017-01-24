@@ -29,7 +29,7 @@ namespace RainyShinyCloudyTake2
 
 			locManager.AuthorizationChanged += OnAuthorizationChanged;
 
-			refreshControl.ValueChanged += _Refresh;
+			refreshControl.ValueChanged += _RefreshValueChanged;
 			refreshControl.AttributedTitle = new NSAttributedString("Pull down or shake your screen to refresh");
 
 			tblForecast.Add(refreshControl);
@@ -46,9 +46,12 @@ namespace RainyShinyCloudyTake2
 		{
 			base.MotionEnded(motion, evt);
 
-			_CaptureLocation();
-			await _FetchWeatherData();
-			_BindWeatherDataToUI();
+			for (int i = 1; i <= refreshControl.Frame.Height; i++)
+			{
+				tblForecast.SetContentOffset(new CoreGraphics.CGPoint(0, -i), true);
+			}
+
+			await _Refresh();
 		}
 
 
@@ -86,7 +89,7 @@ namespace RainyShinyCloudyTake2
 
 		private async Task _FetchWeatherData()
 		{
-			if (!Reachability.IsHostReachable("www.google.com"))
+			if (!Reachability.IsHostReachable(Constants.LOCATION_URL) || !Reachability.IsHostReachable(Constants.CURRENT_WEATHER_URL) || !Reachability.IsHostReachable(Constants.FORECAST_URL))
 			{
 				_CreateAndShowAlert("Please turn on Wifi or Cellular data.");
 			}
@@ -141,7 +144,12 @@ namespace RainyShinyCloudyTake2
 			alert.Show();
 		}
 
-		private async void _Refresh(object sender, EventArgs args)
+		private async void _RefreshValueChanged(object sender, EventArgs args)
+		{
+			await _Refresh();
+		}
+
+		private async Task _Refresh()
 		{
 			refreshControl.BeginRefreshing();
 

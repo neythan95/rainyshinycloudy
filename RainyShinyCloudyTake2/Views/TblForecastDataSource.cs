@@ -50,6 +50,8 @@ namespace RainyShinyCloudyTake2
 
 		public void PopulateForecasts(string json)
 		{
+			forecasts = new List<Forecast>();
+
 			var forecast = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
 			var forecastArray = JsonConvert.DeserializeObject<Dictionary<string, object>[]>(forecast["list"].ToString());
 
