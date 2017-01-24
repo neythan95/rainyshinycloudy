@@ -195,6 +195,7 @@
     <Compile Include="Models\CurrentWeather.cs" />
     <Compile Include="Models\Forecast.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="reachability.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

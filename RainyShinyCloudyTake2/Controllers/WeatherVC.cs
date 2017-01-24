@@ -3,14 +3,16 @@ using UIKit;
 using System.Net.Http;
 using CoreLocation;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace RainyShinyCloudyTake2
 {
 	public partial class WeatherVC : UIViewController
 	{
+		TblForecastDataSource ds = new TblForecastDataSource();
+		TblForecastDelegate dl = new TblForecastDelegate();
+
+		CLLocationManager locManager = new CLLocationManager();
 		CLAuthorizationStatus authorizationStatus;
-		CLLocationManager locManager;
 
 		public WeatherVC(IntPtr handle) : base(handle)
 		{
@@ -21,13 +23,20 @@ namespace RainyShinyCloudyTake2
 		{
 			base.ViewDidLoad();
 
-			locManager = new CLLocationManager();
+			tblForecast.Delegate = dl;
+			tblForecast.DataSource = ds;
+
 			locManager.AuthorizationChanged += OnAuthorizationChanged;
+		}
+
+		public override void ViewWillAppear(bool animated)
+		{
+			base.ViewWillAppear(animated);
 
 			_RequestAuthorization();
 		}
 
-		async void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs args)
+		public async void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs args)
 		{
 			authorizationStatus = args.Status;
 
@@ -35,21 +44,25 @@ namespace RainyShinyCloudyTake2
 			{
 				_CaptureLocation();
 
-				CurrentWeather currentWeather = new CurrentWeather(await _CallAPI(Constants.CURRENT_WEATHER_URL));
-				_BindCurrentWeatherToUI(currentWeather);
+				if (Reachability.InternetConnectionStatus() == NetworkStatus.NotReachable)
+				{
+					_CreateAndShowAlert("Please turn on Wifi or Cellular data.");
+				}
+				else
+				{
+					try
+					{
+						var currentWeather = new CurrentWeather(await _CallAPI(Constants.CURRENT_WEATHER_URL));
+						ds.PopulateForecasts(await ds.CallAPI(Constants.FORECAST_URL));
 
-				TblForecastDataSource ds = new TblForecastDataSource();
-				ds.PopulateForecasts(await ds.CallAPI(Constants.FORECAST_URL));
-
-				tblForecast.Delegate = new TblForecastDelegate();
-				tblForecast.DataSource = ds;
-
-				tblForecast.ReloadData();
-
-				//Console.WriteLine($"{ds.forecasts[0].Day}");
-				//Console.WriteLine($"{ds.forecasts[0].WeatherType}");
-				//Console.WriteLine($"{ds.forecasts[0].TempLow}");
-				//Console.WriteLine($"{ds.forecasts[0].TempHigh}");
+						_BindCurrentWeatherToUI(currentWeather);
+						tblForecast.ReloadData();
+					}
+					catch
+					{
+						_CreateAndShowAlert("Cannot retrieve data from the server, please make sure that the network you are using is connected to the internet.");
+					}
+				}
 			}
 		}
 
@@ -82,13 +95,26 @@ namespace RainyShinyCloudyTake2
 		private async Task<string> _CallAPI(string url)
 		{
 			HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Get, url);
-
 			HttpClient client = new HttpClient();
-			HttpResponseMessage result = await client.SendAsync(msg);
+			string json = "";
 
-			string json = await result.Content.ReadAsStringAsync();
+			try
+			{
+				HttpResponseMessage response = await (client.SendAsync(msg));
+				json = await response.Content.ReadAsStringAsync();
+			}
+			catch { }
 
 			return json;
+		}
+
+		private void _CreateAndShowAlert(string msg)
+		{
+			UIAlertView alert = new UIAlertView();
+			alert.Message = msg;
+			alert.AddButton("ok");
+
+			alert.Show();
 		}
 		#endregion
 	}
