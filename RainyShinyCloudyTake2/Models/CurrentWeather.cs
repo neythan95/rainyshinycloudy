@@ -67,8 +67,19 @@ namespace RainyShinyCloudyTake2
 			var resultArray = JsonConvert.DeserializeObject<object[]>(currentLocation["results"].ToString());
 			var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(resultArray[0].ToString());
 			var address_components = JsonConvert.DeserializeObject<object[]>(result["address_components"].ToString());
-			var address = JsonConvert.DeserializeObject<Dictionary<string, object>>(address_components[2].ToString());
-			string city = address["long_name"].ToString();
+			string city = "";
+
+			foreach (var tempAddress in address_components)
+			{
+				var address = JsonConvert.DeserializeObject<Dictionary<string, object>>(tempAddress.ToString());
+				var types = JsonConvert.DeserializeObject<string[]>(address["types"].ToString());
+
+				if (types[0].Equals("locality"))
+				{
+					city = address["long_name"].ToString();
+					break;
+				}
+			}
 
 			this.City = city;
 		}

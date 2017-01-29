@@ -85,6 +85,10 @@ namespace RainyShinyCloudyTake2
 
 			Constants.CONSTRUCT_WEATHER_URL(location.Latitude, location.Longitude);
 			Constants.CONSTRUCT_LOCATION_URL(location.Latitude, location.Longitude);
+
+			//Console.WriteLine(Constants.LOCATION_URL);
+			//Console.WriteLine(Constants.CURRENT_WEATHER_URL);
+			//Console.WriteLine(Constants.FORECAST_URL);
 		}
 
 		private async Task _FetchWeatherData()
